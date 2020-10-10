@@ -1,0 +1,73 @@
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @param {Express.Response} res
+     */
+    index( res )
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param {Express.Response} res
+     */
+    create( res )
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param {int}  id
+     */
+    store( id )
+    {
+       //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param {int}  id
+     * @param {Express.Response} res
+     */
+    show( res, id )
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param {int}  id
+     * @param {Express.Response} res
+     */
+    edit( res, id )
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param {int}  id
+     */
+    update( id )
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param {int}  id
+     * @param {Express.Response} res
+     */
+    destroy( id )
+    {
+        //
+    }
