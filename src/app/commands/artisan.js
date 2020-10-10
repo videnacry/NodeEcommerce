@@ -3,25 +3,29 @@ import fs from 'fs'
 import path from 'path'
 import ora from 'ora'
 import chalk from 'chalk'
-function printFile(path, type, file_name){
-    let content
-    switch(type){
-        case 'controller':
-            content = 'class ' + file_name + '{}'
-        case 'model':
-            content = 'class ' + file_name + '{}'                   
-        case 'migration':
-            content = 'const query = \n' + 'export default function' + file_name 
-            + '(conn, DB){\n' + 'conn.query(query , (err)=>{\n' + 'if(err){\n' 
-            + '     console.log(err)\n' + '        }\n' + '    })\n' + '}\n'
+function makeMigration(file_name, cli){
+    let file_path = path.resolve(process.cwd(), 'src', 'database', 'migrations' , file_name + '.js')
+    if(fs.existsSync(path.resolve(file_path))){
+        spinner.fail(chalk.bgRedBright('The file could not be created ! :c'))
+        throw new Error('A controller file with that name already exists')
     }
-    fs.writeFile(path, content, (err)=>{
+    let content = 'const query = \'\'\n' + 'export default function ' + file_name 
+    + '(conn, DB){\n' + '\tconn.query(query , (err)=>{\n' + '\t\tif(err){\n' 
+    + '\t\t\tconsole.log(err)\n' + '\t\t}\n' + '\t})\n' + '}\n'
+    fs.writeFile(file_path, content, (err)=>{
         if(err){
             spinner.fail(chalk.bgRedBright('The file could not be created ! :c '))
             throw new Error(err)
         }
+        spinner.succeed(chalk.bgGreenBright('File created succesfully ! :)'))
     })
 }
+/**
+ * Creates controller file if not file with such name and path found
+ * 
+ * @param {string} file_name 
+ * @param {Command.program} cli 
+ */
 function makeController(file_name, cli){
     let file_path = path.resolve(process.cwd(), 'src', 'app',  'http', 'controllers' , file_name + '.js')
     if(fs.existsSync(path.resolve(file_path))){
@@ -75,10 +79,11 @@ program
 
     })
 program
-    .command('make:migration')
+    .command('make:migration <file_name>')
     .option('--create <table>', 'Used with a --make=migration-- command, creates migration for table creation')
     .option('--table <table>', 'Used with a --make=migration-- command, creates migration for table update')
-    .action((cli)=>{
-
+    .action((file_name, cli)=>{
+        spinner.start()
+        makeMigration(file_name, cli)
     })
 program.parse(process.argv)
