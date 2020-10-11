@@ -4,7 +4,8 @@ import path from 'path'
 import ora from 'ora'
 import chalk from 'chalk'
 function makeMigration(file_name, cli){
-    let file_path = path.resolve(process.cwd(), 'src', 'database', 'migrations' , file_name + '.js')
+    const migrationName = Date.now() + file_name + '.js'
+    let file_path = path.resolve(process.cwd(), 'src', 'database', 'migrations' , migrationName)
     if(fs.existsSync(path.resolve(file_path))){
         spinner.fail(chalk.bgRedBright('The file could not be created ! :c'))
         throw new Error('A controller file with that name already exists')
@@ -17,8 +18,18 @@ function makeMigration(file_name, cli){
             spinner.fail(chalk.bgRedBright('The file could not be created ! :c '))
             throw new Error(err)
         }
-        spinner.succeed(chalk.bgGreenBright('File created succesfully ! :)'))
     })
+    const migrationsPath = path.resolve(process.cwd(), 'src', 'database', 'migrations.json')
+    let migrationsJson = fs.readFileSync(migrationsPath, 'utf-8', err => {
+        if(err) console.log(err)
+    })
+    const migrationsArray = JSON.parse(migrationsJson)
+    migrationsArray.push(migrationName)
+    migrationsJson = JSON.stringify(migrationsArray)
+    fs.writeFile(migrationsPath, migrationsJson, err => {
+        if(err) console.log(err)
+    })
+        spinner.succeed(chalk.bgGreenBright('File created succesfully ! :)'))
 }
 /**
  * Creates controller file if not file with such name and path found
