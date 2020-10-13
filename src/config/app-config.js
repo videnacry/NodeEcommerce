@@ -25,7 +25,7 @@ function getExpress(){
     switch(envMode){
         case 'development':
             const viewsRelativePath = process.env.VIEWS_RELATIVE_PATH.split(',')
-            let viewsPath = path.resolve(process.cwd())
+            let viewsPath = process.cwd()
             viewsRelativePath.forEach(folderName => {
                 viewsPath = path.resolve(viewsPath, folderName)
             })

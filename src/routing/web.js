@@ -1,8 +1,9 @@
 import express from 'express/index.js'
 import {EXPRESS} from '.././config/app-config.js'
+import path from 'path'
 
 const route = express()
-const port = EXPRESS.PORT
+route.set('views', EXPRESS.VIEWS_PATH)
 
 route.get('/', (req, res) => {
     res.send('You are consuming my mind, can\'t you see it ?')
@@ -17,5 +18,4 @@ route.get('/database/create', (req, res) => {
         })
     })
 })
-
-route.listen(port)
+route.listen(EXPRESS.PORT)
