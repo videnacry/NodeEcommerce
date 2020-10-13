@@ -11,7 +11,7 @@ function makeMigration(file_name, cli){
         throw new Error('A controller file with that name already exists')
     }
     let content = 'const query = \'\'\n' + 'export default function ' + file_name 
-    + '(conn, DB){\n' + '\tconn.query(query , (err)=>{\n' + '\t\tif(err){\n' 
+    + '(conn){\n' + '\tconn.query(query , (err)=>{\n' + '\t\tif(err){\n' 
     + '\t\t\tconsole.log(err)\n' + '\t\t}\n' + '\t})\n' + '}\n'
     fs.writeFile(file_path, content, (err)=>{
         if(err){
