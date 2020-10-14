@@ -1,12 +1,16 @@
 import express from 'express/index.js'
 import {EXPRESS} from '.././config/app-config.js'
-import path from 'path'
 
 const route = express()
 route.set('views', EXPRESS.VIEWS_PATH)
+route.set('view engine', 'ejs')
+
+route.use('/jquery', express.static(EXPRESS.JQUERY_PATH))
+route.use('/bootstrap', express.static(EXPRESS.BOOTSTRAP_STYLE_PATH))
+route.use('/bootstrap', express.static(EXPRESS.BOOTSTRAP_SCRIPT_PATH))
 
 route.get('/', (req, res) => {
-    res.send('You are consuming my mind, can\'t you see it ?')
+    res.render('UserRegister', {user: {email: 'bleink@outlook.es'}})
 })
 
 route.get('/database/create', (req, res) => {

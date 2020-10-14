@@ -25,17 +25,37 @@ function getExpress(){
     switch(envMode){
         case 'development':
             const viewsRelativePath = process.env.VIEWS_RELATIVE_PATH.split(',')
-            let viewsPath = process.cwd()
-            viewsRelativePath.forEach(folderName => {
-                viewsPath = path.resolve(viewsPath, folderName)
-            })
+            const viewsPath = pathFromArray(viewsRelativePath)
+            const bootstrapStyleRelativePath = process.env.BOOTSTRAP_CSS_RELATIVE_PATH.split(',')
+            const bootstrapStylePath = pathFromArray(bootstrapStyleRelativePath)
+            const bootstrapScriptRelativePath = process.env.BOOTSTRAP_JS_RELATIVE_PATH.split(',')
+            const bootstrapScriptPath = pathFromArray(bootstrapScriptRelativePath)
+            const jqueryRelativePath = process.env.JQUERY_RELATIVE_PATH.split(',')
+            const jqueryPath = pathFromArray(jqueryRelativePath)
             return {
                 PORT: process.env.PORT,
-                VIEWS_PATH: viewsPath
+                VIEWS_PATH: viewsPath,
+                BOOTSTRAP_STYLE_PATH: bootstrapStylePath,
+                BOOTSTRAP_SCRIPT_PATH: bootstrapScriptPath,
+                JQUERY_PATH: jqueryPath
             }
         case 'production':
             break;
         default:
             break;
     } 
+}
+
+/**
+ * 
+ * It takes an array of folders in specific order and return absolute path string with them in that order
+ * @param {array} haystack 
+ * @returns {string} path
+ */
+function pathFromArray(haystack){
+    let resultPath = process.cwd()
+    haystack.forEach(folderName => {
+        resultPath = path.resolve(resultPath, folderName)
+    })
+    return resultPath
 }
