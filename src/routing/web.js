@@ -9,10 +9,14 @@ route.use('/jquery', express.static(EXPRESS.JQUERY_PATH))
 route.use('/bootstrap', express.static(EXPRESS.BOOTSTRAP_STYLE_PATH))
 route.use('/bootstrap', express.static(EXPRESS.BOOTSTRAP_SCRIPT_PATH))
 
-route.get('/', (req, res) => {
-    res.render('UserRegister', {user: {email: 'bleink@outlook.es'}})
+route.get('/register', (req, res) => {
+    const userController = EXPRESS.JOIN(EXPRESS.CONTROLLERS_RELATIVE_ROUTING, 'UserController.js')
+    import(EXPRESS.CONTROLLERS_RELATIVE_ROUTING + 'UserController.js').then(({create}) => {
+        create(res)
+    }).catch(err => {
+        res.send(err)
+    })
 })
-
 route.get('/database/create', (req, res) => {
     import('../database/db.js').then(dbFile => {
         dbFile.Db.createDatabase().then(() => {
@@ -22,4 +26,6 @@ route.get('/database/create', (req, res) => {
         })
     })
 })
-route.listen(EXPRESS.PORT)
+route.listen(EXPRESS.PORT, ()=>{
+    console.log('http://localhost:' + EXPRESS.PORT)
+})
